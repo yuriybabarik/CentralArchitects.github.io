@@ -197,7 +197,7 @@
 
             function attemptNextExtension() {
                 if (extIndex >= extensions.length) {
-                    return; // Більше немає картинок під цим номером
+                    return;
                 }
 
                 const currentUrl = `./${basePath}/image_${formattedIndex}${extensions[extIndex]}`;
@@ -206,7 +206,6 @@
                 img.onload = () => {
                     img.alt = `Photo ${num}`;
                     container.appendChild(img);
-                    // Переходимо до наступної картинки
                     loadProjectGallery(container, basePath, num + 1);
                 };
 
@@ -228,9 +227,24 @@
             const closeBtn = document.getElementById('contacts-close');
             const overlay = document.getElementById('contacts-overlay');
 
-            if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); contactsModal.classList.add('active'); });
-            if (closeBtn) closeBtn.addEventListener('click', () => contactsModal.classList.remove('active'));
-            if (overlay) overlay.addEventListener('click', () => contactsModal.classList.remove('active'));
+            if (openBtn) {
+                openBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (contactsModal) contactsModal.classList.add('active');
+                });
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    if (contactsModal) contactsModal.classList.remove('active');
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    if (contactsModal) contactsModal.classList.remove('active');
+                });
+            }
 
             // URL Parameters parsing
             const urlParams = new URLSearchParams(window.location.search);
@@ -246,7 +260,7 @@
 
             try {
                 const response = await fetch('./projects.json');
-                if (!response.ok) throw new Error(`Помилка завантаження JSON: ${response.status}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
                 const data = await response.json();
                 const projects = data[categoryType] || [];
@@ -265,7 +279,7 @@
                     if (titleEl) titleEl.textContent = "Проєкт не знайдено";
                 }
             } catch (err) {
-                console.error("Помилка:", err);
+                console.error("Помилка завантаження даних проєкту:", err);
                 if (titleEl) titleEl.textContent = "Помилка завантаження даних";
             }
         });
