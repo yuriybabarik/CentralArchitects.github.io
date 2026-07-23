@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Architects</title>
+    <title>Наші проекти — Central Architects</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -42,22 +42,11 @@
         }
         .main-nav a:hover, .main-nav a.active { color: #0073aa; }
 
-        /* HERO SECTION WITH VIDEO */
-        .hero { position: relative; width: 100%; height: 75vh; min-height: 400px; overflow: hidden; background: #000; }
-        .hero-video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block;
-        }
-        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; }
-        .hero-title { font-size: 42px; font-weight: 700; letter-spacing: 3px; color: #fff; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.8); text-align: center; padding: 0 20px; }
-
-        /* MAIN CONTENT */
-        .main-container { max-width: 1400px; margin: 0 auto; padding: 50px 20px; }
-        .section-title { font-size: 28px; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .page-title-header { text-align: center; padding: 40px 20px 10px; }
+        .page-title-header h1 { font-size: 28px; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
 
         /* CATEGORIES GRID (2 в ряд) */
+        .categories-section { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr) !important; gap: 20px; }
         .category-card { position: relative; border-radius: 8px; overflow: hidden; display: block; text-decoration: none; background: #1e1e1e; aspect-ratio: 16 / 9; box-shadow: 0 4px 16px rgba(0,0,0,0.5); transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .category-card:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
@@ -106,7 +95,6 @@
         @media (max-width: 768px) { 
             .main-nav { gap: 18px; }
             .main-nav a { font-size: 12px; }
-            .hero-title { font-size: 24px; }
             .category-name { font-size: 13px; }
             .category-overlay { padding: 10px; }
             .categories-grid { gap: 10px; }
@@ -123,24 +111,17 @@
 
     <header class="site-header">
         <nav class="main-nav">
-            <a href="index.html" class="active">Головна</a>
-            <a href="categories.html">Наші проекти</a>
+            <a href="index.html">Головна</a>
+            <a href="categories.html" class="active">Наші проекти</a>
             <a href="#" id="open-contacts-btn">Контакти</a>
         </nav>
     </header>
 
-    <section class="hero">
-        <video id="hero-video" class="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
-            <source src="uploads/video/mainvideo.mp4" type="video/mp4">
-            Ваш браузер не підтримує відео.
-        </video>
-        <div class="hero-overlay">
-            <h1 class="hero-title">Central Architects</h1>
-        </div>
-    </section>
+    <div class="page-title-header">
+        <h1>Категорії проєктів</h1>
+    </div>
 
-    <main class="main-container">
-        <h2 class="section-title">Категорії проєктів</h2>
+    <section class="categories-section">
         <div class="categories-grid">
             <a href="category.html?type=interiors" class="category-card">
                 <img id="cat-img-interiors" src="" alt="Інтер'єри">
@@ -159,7 +140,7 @@
                 <div class="category-overlay"><span class="category-name">Громадська архітектура</span></div>
             </a>
         </div>
-    </main>
+    </section>
 
     <footer class="footer-blog">
         <div class="footer-blog-container">
@@ -240,19 +221,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-            const video = document.getElementById('hero-video');
-            if (video) {
-                video.muted = true;
-                const playPromise = video.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(() => {
-                        document.body.addEventListener('touchstart', () => {
-                            video.play();
-                        }, { once: true });
-                    });
-                }
-            }
-
             const contactsModal = document.getElementById('contacts-modal');
             const openBtn = document.getElementById('open-contacts-btn');
             const closeBtn = document.getElementById('contacts-close');
