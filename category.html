@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проєкти — Central Architects</title>
+    <title>Проекти — Central Architects</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -14,7 +14,7 @@
             line-height: 1.6; 
             padding-top: 80px; 
         }
-
+        
         /* HEADER & NAVIGATION */
         .site-header { 
             position: fixed; 
@@ -22,7 +22,7 @@
             left: 0; 
             width: 100%; 
             height: 60px; 
-            background-color: rgba(18, 18, 18, 0.9); 
+            background-color: rgba(18, 18, 18, 0.95); 
             backdrop-filter: blur(8px); 
             z-index: 1000; 
             display: flex; 
@@ -30,7 +30,7 @@
             justify-content: center; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
         }
-        .main-nav { display: flex; gap: 25px; }
+        .main-nav { display: flex; gap: 35px; }
         .main-nav a { 
             color: #ffffff; 
             text-decoration: none; 
@@ -42,15 +42,57 @@
         }
         .main-nav a:hover, .main-nav a.active { color: #0073aa; }
 
-        /* PAGE CONTENT */
-        .category-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .category-title { font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; color: #fff; text-align: center; }
-        
-        .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
-        .project-card { background: #1e1e1e; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        .project-card img { width: 100%; height: 350px; object-fit: cover; display: block; }
-        .project-info { padding: 20px; }
-        .project-info h3 { font-size: 20px; color: #fff; margin-bottom: 10px; }
+        /* PAGE TITLE */
+        .category-title-header {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .category-title-header h1 {
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        /* PROJECTS GRID */
+        .projects-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+        }
+        .project-card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .project-card-info {
+            padding: 20px;
+        }
+        .project-card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
 
         /* FOOTER BLOG SECTION */
         .footer-blog { background: #0a0a0a; padding: 70px 20px 40px; border-top: 1px solid #222; margin-top: 60px; }
@@ -58,8 +100,8 @@
         .footer-blog-title { font-size: 26px; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; text-align: left; }
         
         .blog-preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .blog-preview-card { position: relative; border-radius: 8px; overflow: hidden; display: block; text-decoration: none; background: #1e1e1e; height: 280px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s ease; }
-        .blog-preview-card:hover { transform: translateY(-6px); }
+        .blog-preview-card { position: relative; border-radius: 8px; overflow: hidden; display: block; text-decoration: none; background: #1e1e1e; height: 280px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .blog-preview-card:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
         .blog-preview-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .blog-preview-card:hover img { transform: scale(1.05); }
         
@@ -68,55 +110,13 @@
 
         .site-footer-bottom { text-align: center; color: #666; font-size: 13px; margin-top: 50px; padding-top: 20px; border-top: 1px solid #1a1a1a; }
 
-        /* CONTACTS MODAL STYLES */
-        .contacts-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
+        /* CONTACTS MODAL LIGHTBOX */
+        .contacts-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .contacts-modal.active { opacity: 1; pointer-events: auto; }
         .contacts-modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
-        .contacts-modal-content {
-            position: relative;
-            z-index: 3001;
-            background: #1a1a1a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 900px;
-            padding: 35px 30px 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            color: #fff;
-        }
-        .contacts-company-title {
-            text-align: center;
-            font-size: 26px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-        .contacts-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 32px;
-            color: #888;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.2s;
-        }
+        .contacts-modal-content { position: relative; z-index: 3001; background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; width: 90%; max-width: 900px; padding: 35px 30px 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); color: #fff; }
+        .contacts-company-title { text-align: center; font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); color: #fff; }
+        .contacts-close { position: absolute; top: 15px; right: 20px; font-size: 32px; color: #888; cursor: pointer; line-height: 1; transition: color 0.2s; }
         .contacts-close:hover { color: #fff; }
         .contacts-body { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         .contacts-info { display: flex; flex-direction: column; gap: 18px; justify-content: center; font-size: 15px; }
@@ -133,13 +133,13 @@
         .contacts-map { width: 100%; height: 280px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
 
         @media (max-width: 1024px) { .blog-preview-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) {
-            .projects-grid { grid-template-columns: 1fr; }
+        @media (max-width: 768px) { 
+            .main-nav { gap: 20px; }
+            .main-nav a { font-size: 12px; }
             .blog-preview-grid { grid-template-columns: 1fr; }
             .contacts-body { grid-template-columns: 1fr; }
             .contacts-map { height: 200px; }
-            .main-nav { gap: 10px; }
-            .main-nav a { font-size: 11px; }
+            .contacts-modal-content { padding: 25px 20px 20px; }
         }
     </style>
 </head>
@@ -148,41 +148,55 @@
     <header class="site-header">
         <nav class="main-nav">
             <a href="index.html">Головна</a>
-            <a href="category.html?type=interiors">Інтер'єри</a>
-            <a href="category.html?type=public_interiors">Громадські інтер'єри</a>
-            <a href="category.html?type=architecture">Архітектура</a>
-            <a href="category.html?type=public_architecture">Громадська архітектура</a>
-            <a href="blog.html">Цікаве у реалізації</a>
+            <a href="projects.html" class="active">Наші проекти</a>
             <a href="#" id="open-contacts-btn">Контакти</a>
         </nav>
     </header>
 
-    <main class="category-container">
-        <h1 class="category-title" id="page-title">Завантаження...</h1>
-        <div class="projects-grid" id="projects-grid"></div>
-    </main>
+    <div class="category-title-header">
+        <h1 id="category-title">Проекти</h1>
+    </div>
+
+    <section class="projects-section">
+        <div class="projects-grid" id="projects-container">
+            <!-- Динамічно завантажуються картки проектів -->
+        </div>
+    </section>
 
     <!-- FOOTER BLOG SECTION -->
     <footer class="footer-blog">
         <div class="footer-blog-container">
             <h2 class="footer-blog-title">Цікаве у реалізації проєктів</h2>
             <div class="blog-preview-grid">
+                
                 <a href="blog.html?tag=lighting" class="blog-preview-card">
                     <img src="uploads/blog/titles/image_001.jpg" alt="Освітлення">
-                    <div class="blog-card-overlay"><span class="blog-card-tag-title">Освітлення</span></div>
+                    <div class="blog-card-overlay">
+                        <span class="blog-card-tag-title">Освітлення</span>
+                    </div>
                 </a>
+
                 <a href="blog.html?tag=decor" class="blog-preview-card">
                     <img src="uploads/blog/titles/image_002.jpg" alt="Декорування">
-                    <div class="blog-card-overlay"><span class="blog-card-tag-title">Декорування</span></div>
+                    <div class="blog-card-overlay">
+                        <span class="blog-card-tag-title">Декорування</span>
+                    </div>
                 </a>
+
                 <a href="blog.html?tag=tech" class="blog-preview-card">
                     <img src="uploads/blog/titles/image_003.jpg" alt="Нові технології">
-                    <div class="blog-card-overlay"><span class="blog-card-tag-title">Нові технології</span></div>
+                    <div class="blog-card-overlay">
+                        <span class="blog-card-tag-title">Нові технології</span>
+                    </div>
                 </a>
+
                 <a href="blog.html?tag=in_progress" class="blog-preview-card">
                     <img src="uploads/blog/titles/image_004.jpg" alt="У процесі">
-                    <div class="blog-card-overlay"><span class="blog-card-tag-title">У процесі</span></div>
+                    <div class="blog-card-overlay">
+                        <span class="blog-card-tag-title">У процесі</span>
+                    </div>
                 </a>
+
             </div>
             <div class="site-footer-bottom">
                 &copy; 2026 Central Architects. Всі права захищено.
@@ -232,55 +246,83 @@
     </div>
 
     <script>
+        const categoryTitles = {
+            'interiors': "Інтер'єри",
+            'public_interiors': "Громадські інтер'єри",
+            'architecture': "Архітектура",
+            'public_architecture': "Громадська архітектура"
+        };
+
+        const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
+
+        function loadProjectCover(imgElement, folderPath) {
+            const basePath = `./${folderPath}/image_001`;
+            let index = 0;
+
+            const tryNext = () => {
+                if (index >= extensions.length) return;
+                const testUrl = basePath + extensions[index];
+                const tempImg = new Image();
+                tempImg.onload = () => { imgElement.src = testUrl; };
+                tempImg.onerror = () => { index++; tryNext(); };
+                tempImg.src = testUrl;
+            };
+            tryNext();
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
-            // Contacts Modal Logic
+            // Modal Contacts
             const contactsModal = document.getElementById('contacts-modal');
             const openBtn = document.getElementById('open-contacts-btn');
             const closeBtn = document.getElementById('contacts-close');
             const overlay = document.getElementById('contacts-overlay');
 
-            function openContacts(e) { if (e) e.preventDefault(); contactsModal.classList.add('active'); }
-            function closeContacts() { contactsModal.classList.remove('active'); }
+            if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); contactsModal.classList.add('active'); });
+            if (closeBtn) closeBtn.addEventListener('click', () => contactsModal.classList.remove('active'));
+            if (overlay) overlay.addEventListener('click', () => contactsModal.classList.remove('active'));
 
-            if (openBtn) openBtn.addEventListener('click', openContacts);
-            if (closeBtn) closeBtn.addEventListener('click', closeContacts);
-            if (overlay) overlay.addEventListener('click', closeContacts);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && contactsModal.classList.contains('active')) closeContacts();
-            });
-
-            // Category Page Render Logic
-            const titles = {
-                'interiors': "Інтер'єри",
-                'public_interiors': 'Громадські інтер\'єри',
-                'architecture': 'Архітектура',
-                'public_architecture': 'Громадська архітектура'
-            };
-
+            // Load Projects for specific Category
             const urlParams = new URLSearchParams(window.location.search);
-            const type = urlParams.get('type') || 'interiors';
-            document.getElementById('page-title').innerText = titles[type] || "Проєкти";
+            const categoryType = urlParams.get('type') || 'interiors';
+
+            const titleElement = document.getElementById('category-title');
+            if (categoryTitles[categoryType]) {
+                titleElement.textContent = categoryTitles[categoryType];
+                document.title = `${categoryTitles[categoryType]} — Central Architects`;
+            }
 
             try {
                 const response = await fetch('./projects.json');
                 if (!response.ok) return;
                 const data = await response.json();
-                const list = data[type] || [];
-                const grid = document.getElementById('projects-grid');
+                const projects = data[categoryType] || [];
+                const container = document.getElementById('projects-container');
 
-                list.forEach(project => {
-                    const card = document.createElement('div');
+                container.innerHTML = '';
+                projects.forEach(project => {
+                    const card = document.createElement('a');
                     card.className = 'project-card';
-                    card.innerHTML = `
-                        <img src="./${project.folder}/image_001.jpg" alt="${project.title}" onerror="this.src='./${project.folder}/image_001.png'">
-                        <div class="project-info">
-                            <h3>${project.title}</h3>
-                        </div>
-                    `;
-                    grid.appendChild(card);
+                    card.href = `project.html?type=${categoryType}&id=${project.id}`;
+
+                    const img = document.createElement('img');
+                    img.className = 'project-card-image';
+                    img.alt = project.title;
+                    loadProjectCover(img, project.folder);
+
+                    const info = document.createElement('div');
+                    info.className = 'project-card-info';
+
+                    const title = document.createElement('div');
+                    title.className = 'project-card-title';
+                    title.textContent = project.title;
+
+                    info.appendChild(title);
+                    card.appendChild(img);
+                    card.appendChild(info);
+                    container.appendChild(card);
                 });
-            } catch (e) {
-                console.error(e);
+            } catch (err) {
+                console.error("Помилка завантаження проектів:", err);
             }
         });
     </script>
