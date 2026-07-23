@@ -148,7 +148,7 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: #fff;
+            background: #eee;
             min-height: 250px;
         }
 
@@ -272,14 +272,14 @@
                 <div class="category-block">
                     <h2><a href="category.html?type=interiors">Інтер'єри</a></h2>
                     <a href="category.html?type=interiors" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Інтер'єри">
+                        <img class="category-cover" data-type="interiors" alt="Інтер'єри">
                     </a>
                 </div>
 
                 <div class="category-block">
                     <h2><a href="category.html?type=public_interiors">Громадські інтер'єри</a></h2>
                     <a href="category.html?type=public_interiors" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Громадські інтер'єри">
+                        <img class="category-cover" data-type="public_interiors" alt="Громадські інтер'єри">
                     </a>
                 </div>
             </div>
@@ -288,14 +288,14 @@
                 <div class="category-block">
                     <h2><a href="category.html?type=architecture">Архітектура</a></h2>
                     <a href="category.html?type=architecture" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Архітектура">
+                        <img class="category-cover" data-type="architecture" alt="Архітектура">
                     </a>
                 </div>
 
                 <div class="category-block">
                     <h2><a href="category.html?type=public_architecture">Громадська архітектура</a></h2>
                     <a href="category.html?type=public_architecture" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Громадська архітектура">
+                        <img class="category-cover" data-type="public_architecture" alt="Громадська архітектура">
                     </a>
                 </div>
             </div>
@@ -341,24 +341,42 @@
             }
         });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
+        const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
 
-            document.querySelectorAll('img.auto-ext-img').forEach(img => {
-                const basePath = img.getAttribute('data-src-base');
-                if (!basePath) return;
+        function tryLoadCover(imgElement, folderPath, coverName) {
+            const basePath = `./${folderPath}/${coverName}`;
+            let index = 0;
 
-                let index = 0;
-                const tryNextExtension = () => {
-                    if (index >= extensions.length) return;
-                    const testUrl = './' + basePath + extensions[index];
-                    const tempImg = new Image();
-                    tempImg.onload = () => { img.src = testUrl; };
-                    tempImg.onerror = () => { index++; tryNextExtension(); };
-                    tempImg.src = testUrl;
-                };
-                tryNextExtension();
-            });
+            const tryNext = () => {
+                if (index >= extensions.length) return;
+                const testUrl = basePath + extensions[index];
+                const tempImg = new Image();
+                tempImg.onload = () => { imgElement.src = testUrl; };
+                tempImg.onerror = () => { index++; tryNext(); };
+                tempImg.src = testUrl;
+            };
+            tryNext();
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch('./projects.json');
+                if (!response.ok) return;
+                const data = await response.json();
+
+                document.querySelectorAll('img.category-cover').forEach(img => {
+                    const type = img.getAttribute('data-type');
+                    const categoryProjects = data[type];
+
+                    if (categoryProjects && categoryProjects.length > 0) {
+                        const firstProject = categoryProjects[0];
+                        const coverName = firstProject.cover || 'interior_001';
+                        tryLoadCover(img, firstProject.folder, coverName);
+                    }
+                });
+            } catch (err) {
+                console.error("Помилка завантаження обкладинок категорій:", err);
+            }
         });
     </script>
 
