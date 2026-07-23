@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Головна сторінка</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Галерея/Сітка блоків Zolo */
+        .zolo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .zolo-card {
+            flex: 1 1 45%;
+            max-width: 48%;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .zolo-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Контактна форма */
+        .contact-form-section {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form-section h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
+            background-color: #0073aa;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #005177;
+        }
+
+        @media (max-width: 768px) {
+            .zolo-card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        
+        <!-- Блок сітки з картинками (із вашого шаблону) -->
+        <section class="zolo-grid">
+            <div class="zolo-card">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
+            </div>
+            <div class="zolo-card">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
+            </div>
+            <div class="zolo-card">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
+            </div>
+            <div class="zolo-card">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
+            </div>
+        </section>
+
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+
+        <!-- Контактна форма (ID 6 з вашого дампу) -->
+        <section class="contact-form-section">
+            <h2>Зв'язатися з нами</h2>
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="name">Ваше ім'я *</label>
+                    <input type="text" id="name" name="your-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Ваш номер телефону (не обов'язково)</label>
+                    <input type="tel" id="phone" name="tel-792">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Ваш e-mail *</label>
+                    <input type="email" id="email" name="your-email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Тема листа *</label>
+                    <input type="text" id="subject" name="your-subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Ваше повідомлення</label>
+                    <textarea id="message" name="your-message"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Відправити</button>
+            </form>
+        </section>
+
+    </main>
+
+</body>
+</html>
