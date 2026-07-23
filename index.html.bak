@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Architects</title>
+    <title>Головна сторінка</title>
     <style>
         * {
             box-sizing: border-box;
@@ -116,25 +116,25 @@
 
     <main class="container">
         
-        <!-- Галерея проєктів -->
+        <!-- Блок сітки з картинками (із вашого шаблону) -->
         <section class="zolo-grid">
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
             </div>
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
             </div>
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
             </div>
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img src="http://localhost/mysite/wp-content/uploads/2025/11/Flux_Dev_advertising_photo_of_a_handmade_flower_pot_made_from__2-3.jpg" alt="Handmade flower pot">
             </div>
         </section>
 
         <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
-        <!-- Контактна форма -->
+        <!-- Контактна форма (ID 6 з вашого дампу) -->
         <section class="contact-form-section">
             <h2>Зв'язатися з нами</h2>
             <form action="#" method="post">
