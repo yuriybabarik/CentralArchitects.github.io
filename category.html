@@ -56,14 +56,14 @@
             margin-bottom: 40px; 
         }
 
-        /* PROJECTS GRID (ТОЧНО ТАКА Ж ЯК І ДЛЯ КАТЕГОРІЙ: 2 В РЯД) */
+        /* PROJECTS GRID (2 В РЯД) */
         .projects-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr) !important; 
             gap: 20px; 
         }
 
-        /* PROJECT CARD (ПОВНІСТЬЮ ДУБЛЮЄ СТИЛІ CATEGORY-CARD) */
+        /* PROJECT CARD */
         .project-card { 
             position: relative; 
             border-radius: 8px; 
@@ -274,7 +274,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-            // Modal Contacts script
             const contactsModal = document.getElementById('contacts-modal');
             const openBtn = document.getElementById('open-contacts-btn');
             const closeBtn = document.getElementById('contacts-close');
@@ -284,7 +283,6 @@
             if (closeBtn) closeBtn.addEventListener('click', () => contactsModal.classList.remove('active'));
             if (overlay) overlay.addEventListener('click', () => contactsModal.classList.remove('active'));
 
-            // URL query param extraction
             const urlParams = new URLSearchParams(window.location.search);
             const categoryType = urlParams.get('type') || 'interiors';
 
@@ -316,14 +314,16 @@
 
                     const img = document.createElement('img');
                     img.id = `project-img-${index}`;
-                    img.alt = project.name || "Проєкт";
+                    // ПЕРЕВІРЯЄМО ПОЛЯ title ТА name
+                    const projectTitle = project.title || project.name || `Проєкт ${index + 1}`;
+                    img.alt = projectTitle;
 
                     const overlayDiv = document.createElement('div');
                     overlayDiv.className = 'project-overlay';
 
                     const nameSpan = document.createElement('span');
                     nameSpan.className = 'project-name';
-                    nameSpan.textContent = project.name || `Проєкт ${index + 1}`;
+                    nameSpan.textContent = projectTitle;
 
                     overlayDiv.appendChild(nameSpan);
                     card.appendChild(img);
