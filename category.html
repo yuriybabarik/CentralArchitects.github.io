@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Категорія — Central Architects</title>
+    <title>Проєкти категорії — Central Architects</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -42,17 +42,28 @@
         }
         .main-nav a:hover, .main-nav a.active { color: #0073aa; }
 
-        /* TITLE SECTION */
-        .category-title-header { text-align: center; padding: 40px 20px 20px; }
-        .category-title-header h1 { font-size: 32px; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+        /* MAIN CONTAINER */
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
 
-        /* PROJECTS GRID */
-        .category-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        /* CATEGORY PAGE TITLE */
+        .page-title { 
+            font-size: 32px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: #ffffff; 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
+
+        /* PROJECTS GRID (ТОЧНО ТАКА Ж ЯК І ДЛЯ КАТЕГОРІЙ: 2 В РЯД) */
         .projects-grid { 
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; 
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 20px; 
         }
+
+        /* PROJECT CARD (ПОВНІСТЬЮ ДУБЛЮЄ СТИЛІ CATEGORY-CARD) */
         .project-card { 
             position: relative; 
             border-radius: 8px; 
@@ -60,19 +71,37 @@
             display: block; 
             text-decoration: none; 
             background: #1e1e1e; 
+            aspect-ratio: 16 / 9; 
             box-shadow: 0 4px 16px rgba(0,0,0,0.5); 
             transition: transform 0.3s ease, box-shadow 0.3s ease; 
         }
-        .project-card:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
-        .project-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; transition: transform 0.5s ease; }
-        .project-card:hover img { transform: scale(1.05); }
-        .project-card-title { 
-            padding: 15px; 
-            background: #1a1a1a; 
-            color: #fff; 
-            font-size: 16px; 
+        .project-card:hover { 
+            transform: translateY(-6px); 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.8); 
+        }
+        .project-card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.5s ease; 
+        }
+        .project-card:hover img { 
+            transform: scale(1.05); 
+        }
+        .project-overlay { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 20px; 
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 70%, transparent 100%); 
+        }
+        .project-name { 
+            color: #ffffff; 
+            font-size: 18px; 
             font-weight: 600; 
-            text-align: center;
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
         }
 
         /* FOOTER BLOG SECTION */
@@ -113,9 +142,12 @@
         .contacts-map { width: 100%; height: 280px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
 
         @media (max-width: 768px) { 
-            .projects-grid { grid-template-columns: 1fr; }
             .main-nav { gap: 18px; }
             .main-nav a { font-size: 12px; }
+            .page-title { font-size: 22px; margin-bottom: 25px; }
+            .projects-grid { gap: 10px; }
+            .project-name { font-size: 12px; }
+            .project-overlay { padding: 10px; }
             .blog-preview-grid { gap: 6px; }
             .blog-preview-card { height: 130px; }
             .blog-card-tag-title { font-size: 10px; letter-spacing: 0; }
@@ -135,12 +167,11 @@
         </nav>
     </header>
 
-    <div class="category-title-header">
-        <h1 id="category-title">Завантаження...</h1>
-    </div>
-
-    <main class="category-container">
-        <div class="projects-grid" id="projects-grid"></div>
+    <main class="main-container">
+        <h1 class="page-title" id="category-title">Проєкти</h1>
+        <div class="projects-grid" id="projects-container">
+            <!-- Динамічно завантажуються проєкти з JSON -->
+        </div>
     </main>
 
     <footer class="footer-blog">
@@ -202,12 +233,6 @@
     </div>
 
     <script>
-        const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
-        const nameCandidates = [
-            'interior_001', 'image_001', 'architecture_001', 'arch_001', 'public_001',
-            'interior_1', 'image_1', '1', '001', 'cover', 'title'
-        ];
-
         const categoryTitles = {
             'interiors': "Інтер'єри",
             'public_interiors': "Громадські інтер'єри",
@@ -215,7 +240,13 @@
             'public_architecture': "Громадська архітектура"
         };
 
-        function setProjectCardCover(imgElement, folderPath) {
+        const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
+        const nameCandidates = [
+            'interior_001', 'image_001', 'architecture_001', 'arch_001', 'public_001',
+            'interior_1', 'image_1', '1', '001', 'cover', 'title'
+        ];
+
+        function findCoverImage(folderPath, imgElement) {
             const cleanFolder = folderPath.replace(/^\/+|\/+$/g, '');
             const possibleUrls = [];
             
@@ -243,6 +274,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
+            // Modal Contacts script
             const contactsModal = document.getElementById('contacts-modal');
             const openBtn = document.getElementById('open-contacts-btn');
             const closeBtn = document.getElementById('contacts-close');
@@ -252,54 +284,62 @@
             if (closeBtn) closeBtn.addEventListener('click', () => contactsModal.classList.remove('active'));
             if (overlay) overlay.addEventListener('click', () => contactsModal.classList.remove('active'));
 
+            // URL query param extraction
             const urlParams = new URLSearchParams(window.location.search);
-            const categoryType = urlParams.get('type');
-            const titleEl = document.getElementById('category-title');
-            const gridEl = document.getElementById('projects-grid');
+            const categoryType = urlParams.get('type') || 'interiors';
 
-            if (!categoryType) {
-                if (titleEl) titleEl.textContent = "Категорію не вказано";
-                return;
-            }
-
-            if (categoryTitles[categoryType]) {
-                titleEl.textContent = categoryTitles[categoryType];
+            const titleElement = document.getElementById('category-title');
+            if (titleElement && categoryTitles[categoryType]) {
+                titleElement.textContent = categoryTitles[categoryType];
                 document.title = `${categoryTitles[categoryType]} — Central Architects`;
             }
+
+            const container = document.getElementById('projects-container');
 
             try {
                 const response = await fetch('./projects.json');
                 if (!response.ok) throw new Error("Не вдалося завантажити projects.json");
 
                 const data = await response.json();
-                const projects = data[categoryType] || [];
+                const projectsList = data[categoryType] || [];
 
-                if (projects.length === 0) {
-                    gridEl.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #888;">У цій категорії поки немає проєктів.</p>';
+                if (projectsList.length === 0) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #888;">У цій категорії поки немає проєктів.</p>`;
                     return;
                 }
 
-                projects.forEach(proj => {
+                container.innerHTML = '';
+                projectsList.forEach((project, index) => {
                     const card = document.createElement('a');
+                    card.href = `project.html?type=${categoryType}&id=${index}`;
                     card.className = 'project-card';
-                    card.href = `project.html?type=${categoryType}&id=${proj.id}`;
 
                     const img = document.createElement('img');
-                    img.alt = proj.title;
+                    img.id = `project-img-${index}`;
+                    img.alt = project.name || "Проєкт";
 
-                    const titleDiv = document.createElement('div');
-                    titleDiv.className = 'project-card-title';
-                    titleDiv.textContent = proj.title;
+                    const overlayDiv = document.createElement('div');
+                    overlayDiv.className = 'project-overlay';
 
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'project-name';
+                    nameSpan.textContent = project.name || `Проєкт ${index + 1}`;
+
+                    overlayDiv.appendChild(nameSpan);
                     card.appendChild(img);
-                    card.appendChild(titleDiv);
-                    gridEl.appendChild(card);
+                    card.appendChild(overlayDiv);
+                    container.appendChild(card);
 
-                    setProjectCardCover(img, proj.folder);
+                    if (project.folder) {
+                        findCoverImage(project.folder, img);
+                    }
                 });
 
             } catch (err) {
-                console.error("Помилка завантаження категорії:", err);
+                console.error("Помилка:", err);
+                if (container) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #ff5555;">Помилка завантаження проєктів.</p>`;
+                }
             }
         });
     </script>
