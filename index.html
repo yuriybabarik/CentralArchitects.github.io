@@ -221,40 +221,49 @@
 
     <script>
         const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
+        const nameCandidates = [
+            'interior_001', 'image_001', 'architecture_001', 'arch_001', 'public_001',
+            'interior_1', 'image_1', '1', '001', 'cover', 'title'
+        ];
 
         function loadCategoryCover(catKey, folderPath) {
             const imgElement = document.getElementById(`cat-img-${catKey}`);
             if (!imgElement) return;
 
-            // Шукаємо картинку за різними можливими префіксами
-            const basePaths = [
-                `./${folderPath}/interior_001`,
-                `./${folderPath}/image_001`,
-                `./${folderPath}/architecture_001`,
-                `./${folderPath}/arch_001`,
-                `./${folderPath}/public_001`
-            ];
+            const cleanFolder = folderPath.replace(/^\/+|\/+$/g, '');
+            const possibleUrls = [];
             
-            let pathIndex = 0;
-            let extIndex = 0;
+            for (const name of nameCandidates) {
+                for (const ext of extensions) {
+                    possibleUrls.push(`${cleanFolder}/${name}${ext}`);
+                    possibleUrls.push(`./${cleanFolder}/${name}${ext}`);
+                }
+            }
 
-            const tryNext = () => {
-                if (pathIndex >= basePaths.length) return;
+            let currentIndex = 0;
 
-                if (extIndex >= extensions.length) {
-                    extIndex = 0;
-                    pathIndex++;
-                    tryNext();
+            function tryNextImage() {
+                if (currentIndex >= possibleUrls.length) {
+                    console.warn(`Не вдалося знайти обкладинку для категорії: ${catKey}`);
                     return;
                 }
 
-                const testUrl = basePaths[pathIndex] + extensions[extIndex];
+                const currentUrl = possibleUrls[currentIndex];
                 const tempImg = new Image();
-                tempImg.onload = () => { imgElement.src = testUrl; };
-                tempImg.onerror = () => { extIndex++; tryNext(); };
-                tempImg.src = testUrl;
-            };
-            tryNext();
+
+                tempImg.onload = () => {
+                    imgElement.src = currentUrl;
+                };
+
+                tempImg.onerror = () => {
+                    currentIndex++;
+                    tryNextImage();
+                };
+
+                tempImg.src = currentUrl;
+            }
+
+            tryNextImage();
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
@@ -282,7 +291,8 @@
 
             try {
                 const response = await fetch('./projects.json');
-                if (!response.ok) return;
+                if (!response.ok) throw new Error("Не вдалося завантажити projects.json");
+                
                 const data = await response.json();
                 for (const catKey in data) {
                     if (data[catKey] && data[catKey].length > 0) {
@@ -290,7 +300,7 @@
                     }
                 }
             } catch (err) {
-                console.error("Помилка JSON:", err);
+                console.error("Помилка при завантаженні JSON:", err);
             }
         });
     </script>
