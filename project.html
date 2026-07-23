@@ -6,6 +6,7 @@
     <title>Проєкт — Central Architects</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background-color: #121212; 
@@ -13,21 +14,141 @@
             line-height: 1.6; 
             padding-top: 60px; 
         }
+        
+        /* HEADER & NAVIGATION */
         .site-header { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 60px; 
-            background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(8px); 
-            z-index: 1000; display: flex; align-items: center; justify-content: center; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 60px; 
+            background-color: rgba(18, 18, 18, 0.95); 
+            backdrop-filter: blur(8px); 
+            z-index: 1000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
         }
         .main-nav { display: flex; gap: 35px; }
-        .main-nav a { color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .main-nav a { 
+            color: #ffffff; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 500; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            transition: color 0.3s; 
+        }
+        .main-nav a:hover, .main-nav a.active { color: #0073aa; }
 
+        /* MAIN CONTAINER */
         .main-container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
-        .project-title { font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; text-align: center; margin-bottom: 40px; }
+        .project-title { 
+            font-size: 32px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: #ffffff; 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
         
-        .gallery-grid { display: flex; flex-direction: column; gap: 20px; align-items: center; }
-        .gallery-grid img { width: 100%; max-width: 1200px; height: auto; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+        /* GALLERY GRID: 2 ПО ГОРИЗОНТАЛІ */
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 20px; 
+            width: 100%; 
+        }
+        .gallery-item {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+            background-color: #1e1e1e;
+            aspect-ratio: 16 / 9;
+            cursor: pointer;
+        }
+        .gallery-item img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
 
+        /* LIGHTBOX STYLES (FADE EFFECT) */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lightbox-img-wrapper {
+            max-width: 90%;
+            max-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            transition: opacity 0.25s ease;
+        }
+        .lightbox-btn {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.2s;
+            user-select: none;
+            z-index: 2010;
+        }
+        .lightbox-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        .lightbox-close { top: 20px; right: 25px; font-size: 32px; }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        .lightbox-counter {
+            position: absolute;
+            bottom: 20px;
+            color: #888;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* FOOTER BLOG SECTION */
         .footer-blog { background: #0a0a0a; padding: 60px 20px 40px; border-top: 1px solid #222; margin-top: 60px; }
         .footer-blog-container { max-width: 1400px; margin: 0 auto; }
         .footer-blog-title { font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
@@ -37,6 +158,20 @@
         .blog-card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px 10px; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 70%, transparent 100%); }
         .blog-card-tag-title { color: #ffffff; font-size: 13px; font-weight: 600; text-transform: uppercase; }
         .site-footer-bottom { text-align: center; color: #666; font-size: 13px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #1a1a1a; }
+
+        @media (max-width: 768px) { 
+            .main-nav { gap: 18px; }
+            .main-nav a { font-size: 12px; }
+            .project-title { font-size: 22px; margin-bottom: 25px; }
+            .gallery-grid { grid-template-columns: 1fr !important; gap: 12px; }
+            .lightbox-prev { left: 10px; width: 40px; height: 40px; font-size: 20px; }
+            .lightbox-next { right: 10px; width: 40px; height: 40px; font-size: 20px; }
+            .lightbox-close { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 24px; }
+            .blog-preview-grid { gap: 6px; }
+            .blog-preview-card { height: 130px; }
+            .blog-card-tag-title { font-size: 10px; letter-spacing: 0; }
+            .blog-card-overlay { padding: 6px 4px; }
+        }
     </style>
 </head>
 <body>
@@ -53,6 +188,17 @@
         <h1 class="project-title" id="project-title">Завантаження...</h1>
         <div class="gallery-grid" id="gallery-container"></div>
     </main>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-btn lightbox-close" id="lb-close">&times;</button>
+        <button class="lightbox-btn lightbox-prev" id="lb-prev">&#10094;</button>
+        <div class="lightbox-img-wrapper">
+            <img src="" alt="" class="lightbox-img" id="lb-img">
+        </div>
+        <button class="lightbox-btn lightbox-next" id="lb-next">&#10095;</button>
+        <div class="lightbox-counter" id="lb-counter"></div>
+    </div>
 
     <footer class="footer-blog">
         <div class="footer-blog-container">
@@ -81,6 +227,66 @@
 
     <script>
         const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
+        const loadedImages = []; // Зберігаємо успішно завантажені URL фото
+        let currentImageIndex = 0;
+
+        const lightbox = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lb-img');
+        const lbCounter = document.getElementById('lb-counter');
+        const lbClose = document.getElementById('lb-close');
+        const lbPrev = document.getElementById('lb-prev');
+        const lbNext = document.getElementById('lb-next');
+
+        function openLightbox(index) {
+            if (loadedImages.length === 0) return;
+            currentImageIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightboxImage() {
+            lbImg.style.opacity = '0';
+            setTimeout(() => {
+                lbImg.src = loadedImages[currentImageIndex];
+                lbCounter.textContent = `${currentImageIndex + 1} / ${loadedImages.length}`;
+                lbImg.style.opacity = '1';
+            }, 150);
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % loadedImages.length;
+            updateLightboxImage();
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + loadedImages.length) % loadedImages.length;
+            updateLightboxImage();
+        }
+
+        // Кліки та гарячі клавіші для лайтбокса
+        lbClose.addEventListener('click', closeLightbox);
+        lbNext.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
+        lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrevImage(); });
+        lbImg.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-img-wrapper')) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNextImage();
+            if (e.key === 'ArrowLeft') showPrevImage();
+        });
 
         document.addEventListener("DOMContentLoaded", async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -97,7 +303,6 @@
                 const data = await response.json();
                 const projectsList = data[categoryType] || [];
 
-                // Шукаємо за id з URL або фолбек на порядковий номер
                 const project = projectsList.find(p => p.id === projectId) || projectsList[parseInt(projectId)];
 
                 if (!project) {
@@ -114,30 +319,53 @@
                 galleryContainer.innerHTML = '';
 
                 for (let i = 1; i <= count; i++) {
-                    const numStr = String(i).padStart(3, '0'); // 001, 002...
-                    const img = document.createElement('img');
-                    img.alt = `${project.title} - Фото ${i}`;
+                    const numPadded = String(i).padStart(3, '0');
+                    const numShort = String(i);
 
-                    // Спочатку ховаємо, поки не знайдемо розширення
-                    img.style.display = 'none';
-                    galleryContainer.appendChild(img);
+                    const nameCandidates = [
+                        `image_${numPadded}`,
+                        `image_${numShort}`,
+                        `interior_${numPadded}`,
+                        `architecture_${numPadded}`,
+                        numPadded,
+                        numShort
+                    ];
 
-                    let extIndex = 0;
-                    function tryLoad() {
-                        if (extIndex >= extensions.length) return;
-                        const url = `${cleanFolder}/image_${numStr}${extensions[extIndex]}`;
+                    const possibleUrls = [];
+                    for (const name of nameCandidates) {
+                        for (const ext of extensions) {
+                            possibleUrls.push(`${cleanFolder}/${name}${ext}`);
+                        }
+                    }
+
+                    let urlIndex = 0;
+                    function tryLoadImage() {
+                        if (urlIndex >= possibleUrls.length) return;
+                        const currentUrl = possibleUrls[urlIndex];
                         const temp = new Image();
                         temp.onload = () => {
-                            img.src = url;
-                            img.style.display = 'block';
+                            const itemIndex = loadedImages.length;
+                            loadedImages.push(currentUrl);
+
+                            const itemWrapper = document.createElement('div');
+                            itemWrapper.className = 'gallery-item';
+
+                            const img = document.createElement('img');
+                            img.src = currentUrl;
+                            img.alt = `${project.title} - Фото ${i}`;
+
+                            itemWrapper.appendChild(img);
+                            itemWrapper.addEventListener('click', () => openLightbox(itemIndex));
+                            galleryContainer.appendChild(itemWrapper);
                         };
                         temp.onerror = () => {
-                            extIndex++;
-                            tryLoad();
+                            urlIndex++;
+                            tryLoadImage();
                         };
-                        temp.src = url;
+                        temp.src = currentUrl;
                     }
-                    tryLoad();
+
+                    tryLoadImage();
                 }
 
             } catch (err) {
