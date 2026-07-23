@@ -8,7 +8,30 @@
       "imagesCount": 10
     }
   ],
-  "public_interiors": [],
-  "architecture": [],
-  "public_architecture": []
-}
+  "public_interiors": [
+    {
+      "id": "2026_Lviv_180m2",
+      "title": "Кав'рня 180 м² (Львів)",
+      "folder": "uploads/myprojects/public_interiors/2026_Lviv_180m2",
+      "cover": "interior_001",
+      "imagesCount": 10
+    }
+   ],
+  "architecture": [
+    {
+      "id": "2026_Kyiv_125m2",
+      "title": "Будинок 125 м² (Київ)",
+      "folder": "uploads/myprojects/architecture/2026_Kyiv_125m2",
+      "cover": "interior_001",
+      "imagesCount": 10
+    }
+   ],
+  "public_architecture": [
+     {
+      "id": "2026_Odessa_180m2",
+      "title": "Ресторан 180 м² (Одесса)",
+      "folder": "uploads/myprojects/public_architectur/2026_Odessa_180m2",
+      "cover": "interior_001",
+      "imagesCount": 10
+    }
+   ],
