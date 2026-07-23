@@ -24,7 +24,7 @@
             background-color: #f9f9f9;
             color: #333;
             line-height: 1.6;
-            padding-top: 60px; /* Відступ під фіксований хідер */
+            padding-top: 60px;
         }
 
         /* 1. ФІКСОВАНИЙ ХІДЕР */
@@ -71,7 +71,6 @@
             background: #000;
         }
 
-        /* Оверлей з назвою Central Architects */
         .hero-title-overlay {
             position: absolute;
             top: 50%;
@@ -110,7 +109,7 @@
 
         .categories-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 по горизонталі */
+            grid-template-columns: 1fr 1fr;
             gap: 40px;
             width: 100%;
             max-width: 1400px;
@@ -142,7 +141,6 @@
             color: #0073aa;
         }
 
-        /* Посилання-картка на категорію */
         .category-card-link {
             display: block;
             text-decoration: none;
@@ -225,7 +223,6 @@
             background-color: #005177;
         }
 
-        /* Мобільна адаптація */
         @media (max-width: 768px) {
             .hero-title-overlay {
                 font-size: 28px;
@@ -250,60 +247,54 @@
     <!-- 1. ФІКСОВАНИЙ ХІДЕР -->
     <header class="site-header">
         <nav class="main-nav">
-            <a href="#hero">Головна</a>
-            <a href="#interiors">Інтер'єри</a>
-            <a href="#architecture">Архітектура</a>
-            <a href="#contacts">Контакти</a>
+            <a href="index.html#hero">Головна</a>
+            <a href="category.html?type=interiors">Інтер'єри</a>
+            <a href="category.html?type=public_interiors">Громадські інтер'єри</a>
+            <a href="category.html?type=architecture">Архітектура</a>
+            <a href="category.html?type=public_architecture">Громадська архітектура</a>
         </nav>
     </header>
 
-    <!-- 2. ГНУЧКИЙ ВІДЕОПЛЕЄР З НАПИСОМ ПОВЕРХ -->
+    <!-- 2. ГНУЧКИЙ ВІДЕОПЛЕЄР -->
     <section id="hero" class="hero-video-container">
         <h1 class="hero-title-overlay">Central Architects</h1>
-        
         <video id="video-id">
             <source src="uploads/video/mainvideo.mp4" type="video/mp4" />
         </video>
     </section>
 
-    <!-- 3. СІТКА КАТЕГОРІЙ (2х2, ПО 1 ОБКЛАДИНЦІ НА КАТЕГОРІЮ) -->
+    <!-- 3. СІТКА КАТЕГОРІЙ -->
     <section class="categories-section">
         <div class="categories-grid">
             
-            <!-- Ліва колонка -->
             <div class="category-column">
-                <!-- Категорія 1: Інтер'єри -->
-                <div id="interiors" class="category-block">
-                    <h2><a href="#interiors">Інтер'єри</a></h2>
-                    <a href="#interiors" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Інтер'єри">
+                <div class="category-block">
+                    <h2><a href="category.html?type=interiors">Інтер'єри</a></h2>
+                    <a href="category.html?type=interiors" class="category-card-link">
+                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Інтер'єри">
                     </a>
                 </div>
 
-                <!-- Категорія 2: Громадські інтер'єри -->
                 <div class="category-block">
-                    <h2><a href="#public-interiors">Громадські інтер'єри</a></h2>
-                    <a href="#public-interiors" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Громадські інтер'єри">
+                    <h2><a href="category.html?type=public_interiors">Громадські інтер'єри</a></h2>
+                    <a href="category.html?type=public_interiors" class="category-card-link">
+                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Громадські інтер'єри">
                     </a>
                 </div>
             </div>
 
-            <!-- Права колонка -->
             <div class="category-column">
-                <!-- Категорія 3: Архітектура -->
-                <div id="architecture" class="category-block">
-                    <h2><a href="#architecture">Архітектура</a></h2>
-                    <a href="#architecture" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Архітектура">
+                <div class="category-block">
+                    <h2><a href="category.html?type=architecture">Архітектура</a></h2>
+                    <a href="category.html?type=architecture" class="category-card-link">
+                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Архітектура">
                     </a>
                 </div>
 
-                <!-- Категорія 4: Громадська архітектура -->
                 <div class="category-block">
-                    <h2><a href="#public-architecture">Громадська архітектура</a></h2>
-                    <a href="#public-architecture" class="category-card-link">
-                        <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Громадська архітектура">
+                    <h2><a href="category.html?type=public_architecture">Громадська архітектура</a></h2>
+                    <a href="category.html?type=public_architecture" class="category-card-link">
+                        <img class="auto-ext-img" data-src-base="uploads/myprojects/interiors/2026_Ternopil_95m2/interior_001" alt="Громадська архітектура">
                     </a>
                 </div>
             </div>
@@ -311,7 +302,7 @@
         </div>
     </section>
 
-    <!-- 4. СЕКЦІЯ КОНТАКТИ -->
+    <!-- 4. КОНТАКТИ -->
     <section id="contacts" class="contact-section">
         <div class="contact-form-card">
             <h2>Зв'язатися з нами</h2>
@@ -320,65 +311,35 @@
                     <label for="name">Ваше ім'я *</label>
                     <input type="text" id="name" name="your-name" required>
                 </div>
-
                 <div class="form-group">
                     <label for="phone">Ваш номер телефону (не обов'язково)</label>
                     <input type="tel" id="phone" name="tel-792">
                 </div>
-
                 <div class="form-group">
                     <label for="email">Ваш e-mail *</label>
                     <input type="email" id="email" name="your-email" required>
                 </div>
-
                 <div class="form-group">
                     <label for="subject">Тема листа *</label>
                     <input type="text" id="subject" name="your-subject" required>
                 </div>
-
                 <div class="form-group">
                     <label for="message">Ваше повідомлення</label>
                     <textarea id="message" name="your-message"></textarea>
                 </div>
-
                 <button type="submit" class="btn-submit">Відправити</button>
             </form>
         </div>
     </section>
 
-    <!-- Ініціалізація Fluid Player & Автопідбір розширень -->
     <script>
-        // Ініціалізація плеєра
         var myFP = fluidPlayer('video-id', {
             "layoutControls": {
-                "controlBar": {
-                    "autoHideTimeout": 3,
-                    "animated": true,
-                    "autoHide": true
-                },
-                "htmlOnPauseBlock": {
-                    "html": null,
-                    "height": null,
-                    "width": null
-                },
-                "autoPlay": true,
-                "mute": true,
-                "allowTheatre": true,
-                "playPauseAnimation": true,
-                "playbackRateEnabled": true,
-                "allowDownload": false,
-                "playButtonShowing": true,
-                "fillToContainer": true,
-                "posterImage": ""
-            },
-            "vastOptions": {
-                "adList": [],
-                "adCTAText": false,
-                "adCTATextPosition": ""
+                "controlBar": { "autoHideTimeout": 3, "animated": true, "autoHide": true },
+                "autoPlay": true, "mute": true, "allowTheatre": true, "fillToContainer": true
             }
         });
 
-        // Автоматичний підбір розширень картинок (.jpg, .JPG, .png, .webp тощо)
         document.addEventListener("DOMContentLoaded", () => {
             const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
 
@@ -387,25 +348,14 @@
                 if (!basePath) return;
 
                 let index = 0;
-
                 const tryNextExtension = () => {
                     if (index >= extensions.length) return;
-
                     const testUrl = basePath + extensions[index];
                     const tempImg = new Image();
-
-                    tempImg.onload = () => {
-                        img.src = testUrl;
-                    };
-
-                    tempImg.onerror = () => {
-                        index++;
-                        tryNextExtension();
-                    };
-
+                    tempImg.onload = () => { img.src = testUrl; };
+                    tempImg.onerror = () => { index++; tryNextExtension(); };
                     tempImg.src = testUrl;
                 };
-
                 tryNextExtension();
             });
         });
