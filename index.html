@@ -230,7 +230,8 @@
 
     <section id="hero" class="hero-video-container">
         <h1 class="hero-title-overlay">Central Architects</h1>
-        <video id="video-id">
+        <!-- Додано атрибут loop для безкінечного відтворення -->
+        <video id="video-id" loop muted playsinline>
             <source src="uploads/video/mainvideo.mp4" type="video/mp4" />
         </video>
     </section>
@@ -361,11 +362,15 @@
     </div>
 
     <script>
-        // Fluid Player Video Setup
+        // Fluid Player Video Setup з підтримкою loop: true
         var myFP = fluidPlayer('video-id', {
             "layoutControls": {
                 "controlBar": { "autoHideTimeout": 3, "animated": true, "autoHide": true },
-                "autoPlay": true, "mute": true, "allowTheatre": true, "fillToContainer": true
+                "autoPlay": true, 
+                "mute": true, 
+                "loop": true,
+                "allowTheatre": true, 
+                "fillToContainer": true
             }
         });
 
