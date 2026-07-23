@@ -42,12 +42,14 @@
         }
         .main-nav a:hover, .main-nav a.active { color: #0073aa; }
 
-        /* HERO SECTION */
+        /* HERO SECTION WITH VIDEO */
         .hero { position: relative; width: 100%; height: 75vh; min-height: 400px; overflow: hidden; background: #000; }
-        .hero-slider { width: 100%; height: 100%; position: relative; }
-        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; }
-        .hero-slide.active { opacity: 1; }
-        .hero-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block;
+        }
         .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; }
         .hero-title { font-size: 42px; font-weight: 700; letter-spacing: 3px; color: #fff; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.8); text-align: center; padding: 0 20px; }
 
@@ -55,7 +57,7 @@
         .main-container { max-width: 1400px; margin: 0 auto; padding: 50px 20px; }
         .section-title { font-size: 28px; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
 
-        /* CATEGORIES GRID (Завжди 2 в ряд) */
+        /* CATEGORIES GRID (2 в ряд) */
         .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr) !important; gap: 20px; }
         .category-card { position: relative; border-radius: 8px; overflow: hidden; display: block; text-decoration: none; background: #1e1e1e; aspect-ratio: 16 / 9; box-shadow: 0 4px 16px rgba(0,0,0,0.5); transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .category-card:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
@@ -64,7 +66,7 @@
         .category-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 70%, transparent 100%); }
         .category-name { color: #ffffff; font-size: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* FOOTER BLOG SECTION (Завжди 4 в ряд) */
+        /* FOOTER BLOG SECTION (4 в ряд) */
         .footer-blog { background: #0a0a0a; padding: 60px 20px 40px; border-top: 1px solid #222; margin-top: 60px; }
         .footer-blog-container { max-width: 1400px; margin: 0 auto; }
         .footer-blog-title { font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; text-align: left; }
@@ -128,13 +130,11 @@
     </header>
 
     <section class="hero">
-        <div class="hero-slider" id="hero-slider">
-            <div class="hero-slide active"><img src="uploads/slider/image_001.jpg" alt="Slide 1"></div>
-            <div class="hero-slide"><img src="uploads/slider/image_002.jpg" alt="Slide 2"></div>
-            <div class="hero-slide"><img src="uploads/slider/image_003.jpg" alt="Slide 3"></div>
-            <div class="hero-slide"><img src="uploads/slider/image_004.jpg" alt="Slide 4"></div>
-            <div class="hero-slide"><img src="uploads/slider/image_005.jpg" alt="Slide 5"></div>
-        </div>
+        <!-- ОНОВЛЕНИЙ ШЛЯХ ДО ВІДЕО -->
+        <video id="hero-video" class="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+            <source src="uploads/video/mainvideo.mp4" type="video/mp4">
+            Ваш браузер не підтримує відео.
+        </video>
         <div class="hero-overlay">
             <h1 class="hero-title">Central Architects</h1>
         </div>
@@ -241,14 +241,18 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-            const slides = document.querySelectorAll('.hero-slide');
-            let currentSlide = 0;
-            if (slides.length > 0) {
-                setInterval(() => {
-                    slides[currentSlide].classList.remove('active');
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    slides[currentSlide].classList.add('active');
-                }, 4000);
+            // Гарантований запуск відео для мобільних браузерів
+            const video = document.getElementById('hero-video');
+            if (video) {
+                video.muted = true;
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        document.body.addEventListener('touchstart', () => {
+                            video.play();
+                        }, { once: true });
+                    });
+                }
             }
 
             const contactsModal = document.getElementById('contacts-modal');
