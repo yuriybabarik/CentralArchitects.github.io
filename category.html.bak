@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проект — Central Architects</title>
+    <title>Проекти — Central Architects</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -42,10 +42,18 @@
         }
         .main-nav a:hover, .main-nav a.active { color: #0073aa; }
 
-        .project-details-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .project-header-title { text-align: center; font-size: 26px; font-weight: 700; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; }
-        .project-gallery { display: flex; flex-direction: column; gap: 20px; }
-        .project-gallery img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: block; background: #1e1e1e; }
+        .category-title-header { text-align: center; padding: 30px 20px 10px; }
+        .category-title-header h1 { font-size: 28px; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+
+        .projects-section { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* PROJECTS GRID (Завжди 2 в ряд) */
+        .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr) !important; gap: 20px; }
+        .project-card { background: #1e1e1e; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-decoration: none; color: #fff; transition: transform 0.3s ease; display: flex; flex-direction: column; }
+        .project-card:hover { transform: translateY(-4px); }
+        .project-card-image { width: 100%; height: 220px; object-fit: cover; display: block; }
+        .project-card-info { padding: 15px; }
+        .project-card-title { font-size: 16px; font-weight: 600; }
 
         /* FOOTER BLOG SECTION (Завжди 4 в ряд) */
         .footer-blog { background: #0a0a0a; padding: 60px 20px 40px; border-top: 1px solid #222; margin-top: 60px; }
@@ -87,6 +95,10 @@
         @media (max-width: 768px) { 
             .main-nav { gap: 18px; }
             .main-nav a { font-size: 12px; }
+            .projects-grid { gap: 10px; }
+            .project-card-image { height: 130px; }
+            .project-card-info { padding: 8px; }
+            .project-card-title { font-size: 12px; }
             .blog-preview-grid { gap: 6px; }
             .blog-preview-card { height: 130px; }
             .blog-card-tag-title { font-size: 10px; letter-spacing: 0; }
@@ -106,10 +118,13 @@
         </nav>
     </header>
 
-    <main class="project-details-container">
-        <h1 class="project-header-title" id="project-title">Завантаження...</h1>
-        <div class="project-gallery" id="project-gallery"></div>
-    </main>
+    <div class="category-title-header">
+        <h1 id="category-title">Проекти</h1>
+    </div>
+
+    <section class="projects-section">
+        <div class="projects-grid" id="projects-container"></div>
+    </section>
 
     <footer class="footer-blog">
         <div class="footer-blog-container">
@@ -170,32 +185,28 @@
     </div>
 
     <script>
+        const categoryTitles = {
+            'interiors': "Інтер'єри",
+            'public_interiors': "Громадські інтер'єри",
+            'architecture': "Архітектура",
+            'public_architecture': "Громадська архітектура"
+        };
+
         const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
 
-        function tryLoadImage(container, basePath, num) {
-            const formattedIndex = String(num).padStart(3, '0');
-            let extIndex = 0;
+        function loadProjectCover(imgElement, folderPath) {
+            const basePath = `./${folderPath}/image_001`;
+            let index = 0;
 
-            const attemptNextExt = () => {
-                if (extIndex >= extensions.length) return;
-                const currentUrl = `${basePath}/image_${formattedIndex}${extensions[extIndex]}`;
-                const img = new Image();
-
-                img.onload = () => {
-                    img.alt = `Photo ${num}`;
-                    container.appendChild(img);
-                    tryLoadImage(container, basePath, num + 1);
-                };
-
-                img.onerror = () => {
-                    extIndex++;
-                    attemptNextExt();
-                };
-
-                img.src = currentUrl;
+            const tryNext = () => {
+                if (index >= extensions.length) return;
+                const testUrl = basePath + extensions[index];
+                const tempImg = new Image();
+                tempImg.onload = () => { imgElement.src = testUrl; };
+                tempImg.onerror = () => { index++; tryNext(); };
+                tempImg.src = testUrl;
             };
-
-            attemptNextExt();
+            tryNext();
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
@@ -209,28 +220,44 @@
             if (overlay) overlay.addEventListener('click', () => contactsModal.classList.remove('active'));
 
             const urlParams = new URLSearchParams(window.location.search);
-            const categoryType = urlParams.get('type');
-            const projectId = urlParams.get('id');
+            const categoryType = urlParams.get('type') || 'interiors';
 
-            if (!categoryType || !projectId) return;
+            const titleElement = document.getElementById('category-title');
+            if (categoryTitles[categoryType]) {
+                titleElement.textContent = categoryTitles[categoryType];
+                document.title = `${categoryTitles[categoryType]} — Central Architects`;
+            }
 
             try {
                 const response = await fetch('./projects.json');
                 if (!response.ok) return;
                 const data = await response.json();
                 const projects = data[categoryType] || [];
-                const currentProject = projects.find(p => p.id === projectId);
+                const container = document.getElementById('projects-container');
 
-                if (currentProject) {
-                    document.getElementById('project-title').textContent = currentProject.title;
-                    document.title = `${currentProject.title} — Central Architects`;
+                container.innerHTML = '';
+                projects.forEach(project => {
+                    const card = document.createElement('a');
+                    card.className = 'project-card';
+                    card.href = `project.html?type=${categoryType}&id=${project.id}`;
 
-                    const gallery = document.getElementById('project-gallery');
-                    gallery.innerHTML = '';
-                    tryLoadImage(gallery, currentProject.folder, 1);
-                } else {
-                    document.getElementById('project-title').textContent = "Проект не знайдено";
-                }
+                    const img = document.createElement('img');
+                    img.className = 'project-card-image';
+                    img.alt = project.title;
+                    loadProjectCover(img, project.folder);
+
+                    const info = document.createElement('div');
+                    info.className = 'project-card-info';
+
+                    const title = document.createElement('div');
+                    title.className = 'project-card-title';
+                    title.textContent = project.title;
+
+                    info.appendChild(title);
+                    card.appendChild(img);
+                    card.appendChild(info);
+                    container.appendChild(card);
+                });
             } catch (err) {
                 console.error("Помилка JSON:", err);
             }
