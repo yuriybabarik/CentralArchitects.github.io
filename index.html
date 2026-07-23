@@ -226,10 +226,13 @@
             const imgElement = document.getElementById(`cat-img-${catKey}`);
             if (!imgElement) return;
 
-            // Перевіряємо за замовчуванням interior_001, після чого image_001
+            // Шукаємо картинку за різними можливими префіксами
             const basePaths = [
                 `./${folderPath}/interior_001`,
-                `./${folderPath}/image_001`
+                `./${folderPath}/image_001`,
+                `./${folderPath}/architecture_001`,
+                `./${folderPath}/arch_001`,
+                `./${folderPath}/public_001`
             ];
             
             let pathIndex = 0;
