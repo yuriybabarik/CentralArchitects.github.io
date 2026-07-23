@@ -149,6 +149,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             background: #fff;
+            min-height: 250px;
         }
 
         .category-card-link:hover {
@@ -350,7 +351,7 @@
                 let index = 0;
                 const tryNextExtension = () => {
                     if (index >= extensions.length) return;
-                    const testUrl = basePath + extensions[index];
+                    const testUrl = './' + basePath + extensions[index];
                     const tempImg = new Image();
                     tempImg.onload = () => { img.src = testUrl; };
                     tempImg.onerror = () => { index++; tryNextExtension(); };
