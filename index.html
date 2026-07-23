@@ -24,7 +24,7 @@
             padding: 40px 20px;
         }
 
-        /* Галерея/Сітка блоків Zolo */
+        /* Галерея */
         .zolo-grid {
             display: flex;
             flex-wrap: wrap;
@@ -41,6 +41,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            min-height: 250px; /* Плейсхолдер поки завантажується */
         }
 
         .zolo-card img {
@@ -50,7 +51,7 @@
             object-fit: cover;
         }
 
-        /* Контактна форма */
+        /* Форма */
         .contact-form-section {
             background: #ffffff;
             padding: 30px;
@@ -119,16 +120,17 @@
         <!-- Галерея проєктів -->
         <section class="zolo-grid">
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <!-- Вказуємо базовий шлях БЕЗ розширення у data-src-base -->
+                <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Інтер'єр Тернопіль 95м2">
             </div>
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Інтер'єр Тернопіль 95м2">
             </div>
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Інтер'єр Тернопіль 95м2">
             </div>
             <div class="zolo-card">
-                <img src="uploads/interiors/95m2_ternopil_2026/interior_001.jpg" alt="Інтер'єр Тернопіль 95м2">
+                <img class="auto-ext-img" data-src-base="uploads/interiors/95m2_ternopil_2026/interior_001" alt="Інтер'єр Тернопіль 95м2">
             </div>
         </section>
 
@@ -168,6 +170,41 @@
         </section>
 
     </main>
+
+    <!-- Скрипт автоматичного підбору розширень -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Список усіх можливих варіантів розширень
+            const extensions = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP', '.jpeg', '.JPEG'];
+
+            document.querySelectorAll('img.auto-ext-img').forEach(img => {
+                const basePath = img.getAttribute('data-src-base');
+                if (!basePath) return;
+
+                let index = 0;
+
+                const tryNextExtension = () => {
+                    if (index >= extensions.length) return; // Якщо нічого не знайшлося
+
+                    const testUrl = basePath + extensions[index];
+                    const tempImg = new Image();
+
+                    tempImg.onload = () => {
+                        img.src = testUrl; // Знайшли працююче розширення!
+                    };
+
+                    tempImg.onerror = () => {
+                        index++;
+                        tryNextExtension(); // Пробуємо наступне розширення зі списку
+                    };
+
+                    tempImg.src = testUrl;
+                };
+
+                tryNextExtension();
+            });
+        });
+    </script>
 
 </body>
 </html>
