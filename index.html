@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Central Architects — Architectural Design Studio</title>
 
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
+
     <!-- Open Graph Метатеги для прев'ю в месенджерах (Telegram, Viber, FB, WhatsApp) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Central Architects — Architectural Design Studio">
@@ -312,6 +315,12 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
+            // Ініціалізація Telegram Mini App
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+            }
+
             const video = document.getElementById('hero-video');
             if (video) {
                 video.muted = true;
